@@ -22,8 +22,9 @@ public class UserVerification extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String usertype = request.getParameter("usertype");
+		out.println(usertype);
 		
-		if(usertype.equals("buyer")){
+		if(usertype.equals("Buyer")){
 			//here we need to check the details from database
 			String sql = "select * from userinfo where email=? and password = ?";
 			
@@ -48,7 +49,7 @@ public class UserVerification extends HttpServlet {
 				e.printStackTrace();
 			}
 			
-		}else if(usertype.equals("owner")){
+		}else if(usertype.equals("Owner")){
 			if(email.equals("admin@gmail.com") && password.equals("admin@123")){
 				response.sendRedirect("owner-dashboard.jsp");
 			}
