@@ -8,7 +8,7 @@
       Email <input type="text" name = "email"/>
       Password <input type = "password" name="password"/>
       Usertype <select name="usertype"><option>Owner</option> <option>Buyer</option></select>
-     
+     Save Password <input type="checkbox" name="save  value="yes"/>
       
      <input type="submit" value="login"/>
 </pre>

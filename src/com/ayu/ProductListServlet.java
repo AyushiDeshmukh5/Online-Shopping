@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,16 @@ public class ProductListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String category = request.getParameter("cat");
+		
+		//we will write category choice to user's disk using cookie
+		
+		//step-1: create cookie object
+		Cookie ck = new Cookie("choice",category);
+		//step-2:set the maximum age of cookie
+		ck.setMaxAge(60*60*24*7);
+		//step-3:add the cookie to response object
+		response.addCookie(ck);
+		
 		PrintWriter out = response.getWriter();
 		
 		try{
@@ -34,6 +45,7 @@ public class ProductListServlet extends HttpServlet {
 			
 			out.println("<html>");
 			out.println("<body>");
+			out.println("Welcome user");
 			out.println("<h3>Book-List</h3>");
 			out.println("<hr>");
 			while(rs.next()){

@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,28 @@ import javax.servlet.http.HttpServletResponse;
 public class CategoryServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	String ch = "";
+	String time ="";
+	//here we are reading a cookie whose name is choice
+	
+//	step-1 :Fetch all the cookies
+	Cookie ck[] = request.getCookies();
+	
+	
+//	step-2:Search for desired ones
+		
+		for(Cookie c:ck){
+			String name = c.getName();
+			if(name.equals("choice")){
+				ch= c.getValue();
+				
+			}else if(name.equals("lastvisit")){
+				time = c.getValue();
+			}
+		}
+		
+		
+		
 		PrintWriter out = response.getWriter();
 		try{
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -30,6 +53,9 @@ public class CategoryServlet extends HttpServlet {
 			
 			out.println("<html>");
 			out.println("<body>");
+			out.println("Welcome user");
+			out.println("<h4>Your last visit time:"+time+"</h4>");
+			out.println("<h4><marquee>Attractive offers on "+ ch+"</marquee></h4>");
 			out.println("<h3>Books-Categories</h3>");
 			out.println("<hr>");
 			while(rs.next()){
@@ -40,6 +66,8 @@ public class CategoryServlet extends HttpServlet {
 				out.println("<br>");
 			}
 			out.println("<hr>");
+			out.println("<a href=buyer-dashboard.jsp>Buyer-Dashboard</a>");
+			out.println("<a href=CategoryServlet>Category page</a>");
 			out.println("</body>");
 			out.println("</html>");
 			
