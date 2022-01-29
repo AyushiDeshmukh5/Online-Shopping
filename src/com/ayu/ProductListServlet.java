@@ -13,12 +13,21 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 @WebServlet("/ProductListServlet")
 public class ProductListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		HttpSession session = request.getSession();
+		String email = (String)session.getAttribute("uid");
+		
+		if(email==null){
+			//there is not memeber uid in session(authentication not done)
+			response.sendRedirect("index.jsp");
+		}
 		
 		String category = request.getParameter("cat");
 		
@@ -45,7 +54,7 @@ public class ProductListServlet extends HttpServlet {
 			
 			out.println("<html>");
 			out.println("<body>");
-			out.println("Welcome user");
+			out.println("Welcome "+email);
 			out.println("<h3>Book-List</h3>");
 			out.println("<hr>");
 			while(rs.next()){

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,13 +14,34 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 @WebServlet("/CategoryServlet")
 public class CategoryServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	String ch = "";
+	
+		//fetching userid from session
+		HttpSession session = request.getSession();
+		String email = (String)session.getAttribute("uid");
+		if(email==null){
+			//there is not memeber uid in session(authentication not done)
+			response.sendRedirect("index.jsp");
+		}
+		
+		
+		// for keeping count of items in cart
+				HashSet<Integer> set = (HashSet<Integer>) session.getAttribute("cart");
+				
+				int n=0;
+				if(set!=null){
+					n=set.size(); //we can find out number of items in collection by using size method
+				}
+				
+		
+		
+		String ch = "";
 	String time ="";
 	//here we are reading a cookie whose name is choice
 	
@@ -28,7 +50,7 @@ public class CategoryServlet extends HttpServlet {
 	
 	
 //	step-2:Search for desired ones
-		
+		if(ck!=null) //alwys check if cookie object is null or not
 		for(Cookie c:ck){
 			String name = c.getName();
 			if(name.equals("choice")){
@@ -53,9 +75,10 @@ public class CategoryServlet extends HttpServlet {
 			
 			out.println("<html>");
 			out.println("<body>");
-			out.println("Welcome user");
-			out.println("<h4>Your last visit time:"+time+"</h4>");
-			out.println("<h4><marquee>Attractive offers on "+ ch+"</marquee></h4>");
+			out.println("Welcome "+email);
+			out.println("<h5>Total Products:" +n+"</h5>");
+			//out.println("<h4>Your last visit time:"+time+"</h4>");
+			//out.println("<h4><marquee>Attractive offers on "+ ch+"</marquee></h4>");
 			out.println("<h3>Books-Categories</h3>");
 			out.println("<hr>");
 			while(rs.next()){

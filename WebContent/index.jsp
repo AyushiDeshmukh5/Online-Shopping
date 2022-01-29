@@ -1,3 +1,6 @@
+<%
+//session.setMaxInactiveInterval(120); //number of seconds
+%>
 <html>
 <body>
 <h3> Online Shopping
